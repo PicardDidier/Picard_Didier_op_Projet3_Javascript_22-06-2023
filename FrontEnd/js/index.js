@@ -1,5 +1,6 @@
 
-//const filtersSelected = new Set();
+const filtersSelected = new Set([0]);
+let works = []
 
 function createFigure(urlImage, textFigCaption, textAlt = '', className = '') {
 
@@ -79,6 +80,7 @@ function createFilter(title, id) {
         modifierFiltersClassName()
 
         console.log(filtersSelected);
+        afficherFigures()
     }
 
     boxfilters.append(filter)
@@ -98,34 +100,53 @@ function modifierFiltersClassName() {
 }
 
 
+function afficherFigures() {
+    const gallery = document.querySelector(".gallery");
+    gallery.innerHTML = null
 
 
+    let filterWorks = works.filter((work, index) => {
+        
+        // si tous est coché
+        if(filtersSelected.has(0)) 
+        
+        return true
+        // si la categoryId de mon work est dans filtersSelected alors je retourne true
+        if(filtersSelected.has(work.categoryId)) 
+        
+        return true
+
+        
+    })
+    
 
 
+    for (const work of filterWorks) {
+        const figure = createFigure(work.imageUrl, work.title, work.title);
+        gallery.append(figure);
+    }
+
+}
 
 
 
 
 
 async function init() {
-    const works = await getWorks();
+    works = await getWorks();
     const categories = await getCategories();
     console.log(works, categories);
-
-    const gallery = document.querySelector(".gallery");
-    gallery.innerHTML = null
-
-
-    for (const work of works) {
+    afficherFigures()
     
-        const figure = createFigure(work.imageUrl, work.title, work.title);
-        gallery.append(figure);
-    }
+
     createFilter('Tous', 0)
+    
+
     for (const category of categories) {
         createFilter(category.name, category.id)
     }
-
+    modifierFiltersClassName()
 }
 
 init()
+
