@@ -1,6 +1,7 @@
 
-const filtersSelected = new Set([0]);
+const filtresSelectionner = new Set([0]);
 let works = []
+let categories = []
 
 function createFigure(urlImage, textFigCaption, textAlt = '', className = '') {
 
@@ -16,9 +17,11 @@ function createFigure(urlImage, textFigCaption, textAlt = '', className = '') {
 
     figure.append(img);
     figure.append(figcaption);
-
+    console.log(figure);
     return figure
+    
 }
+
 
 
 async function getCategories() {
@@ -67,30 +70,31 @@ function createFilter(title, id) {
     filter.innerText = title
 
     filter.onclick = (event) => {
-        if (id === 0 || filtersSelected.has(0)) {
-            filtersSelected.clear()
+        if (id === 0 || filtresSelectionner.has(0)) {
+            filtresSelectionner.clear()
         }
 
-        if (!filtersSelected.has(id)) {
-            filtersSelected.add(id)
+        if (!filtresSelectionner.has(id)) {
+            filtresSelectionner.add(id)
         } else {
-            filtersSelected.delete(id)
+            filtresSelectionner.delete(id)
         }
 
         modifierFiltersClassName()
 
-        console.log(filtersSelected);
+        console.log(filtresSelectionner);
         afficherFigures()
     }
 
     boxfilters.append(filter)
+    
 }
 
 function modifierFiltersClassName() {
     const filters = document.querySelectorAll('.box-filters .filter')
     let i = 0
     for (const filter of filters) {
-        if (filtersSelected.has(i)) {
+        if (filtresSelectionner.has(i)) {
             filter.classList.add("selected")
         } else {
             filter.classList.remove("selected")
@@ -99,27 +103,65 @@ function modifierFiltersClassName() {
     }
 }
 
+function createGestionPhoto(work) {
+    
+
+    const imageModal = document.createElement('div')
+    imageModal.className = 'image-modal'
+
+    const image = document.createElement('img')
+    image.src = work.imageUrl
+    image.className = "image-modal1"
+
+    imageModal.append(image)
+
+    const icon1 = document.createElement('i')
+    icon1.className = "fa-solid fa-trash-can icon-modal"
+    imageModal.append(icon1)
+
+
+    const icon2 = document.createElement('i')
+    icon2.className = "fa-solid fa-arrows-up-down-left-right icon-modal1"
+    imageModal.append(icon2)
+
+    return imageModal
+
+}
+
+function afficherGestionGallery() {
+    // 1. recupère la div gestion gallery
+    // 2. boucle sur les traveaux
+    // 3. ajoute les photos
+    const gallery = document.querySelector(".gestionGallery");
+    gallery.innerHTML = null
+
+
+    for (const work of works) {
+        const photo = createGestionPhoto(work);
+        gallery.append(photo);
+    }
+
+
+}
 
 function afficherFigures() {
     const gallery = document.querySelector(".gallery");
     gallery.innerHTML = null
 
 
-    let filterWorks = works.filter((work, index) => {
-        
+  let filterWorks = works.filter((work, index) => {
+
         // si tous est coché
-        if(filtersSelected.has(0)) 
-        
-        return true
-        // si la categoryId de mon work est dans filtersSelected alors je retourne true
-        if(filtersSelected.has(work.categoryId)) 
-        
-        return true
+        if (filtresSelectionner.has(0))
 
-        
+            return true
+        // si la categoryId de mon work est dans filtresSelectionner alors je retourne true
+        if (filtresSelectionner.has(work.categoryId))
+
+           return true
+
+
     })
-    
-
 
     for (const work of filterWorks) {
         const figure = createFigure(work.imageUrl, work.title, work.title);
@@ -134,19 +176,70 @@ function afficherFigures() {
 
 async function init() {
     works = await getWorks();
-    const categories = await getCategories();
+    categories = await getCategories();
     console.log(works, categories);
     afficherFigures()
-    
+
+
 
     createFilter('Tous', 0)
     
 
+
     for (const category of categories) {
         createFilter(category.name, category.id)
     }
-    modifierFiltersClassName()
+   modifierFiltersClassName()
+
+    afficherGestionGallery()
 }
 
 init()
+
+//-------------------------------------------------------------------------
+
+let modal = null
+console.log(modal);
+
+const openModal = function (e) {
+    // console.log('openModal', works);
+    e.preventDefault()
+    const id = e.target.getAttribute('href')
+    const target = document.querySelector(id)
+
+    target.style.display = null
+    target.removeAttribute('aria-hidden')
+    target.setAttribute('aria-modal', 'true')
+    modal = target
+    modal.addEventListener('click', closeModal)
+    modal.querySelector('.js-modal-close').addEventlistener('click', closeModal)
+    modal.querySelector('.js-modal-stop').addEventlistener('click', stopPropagation)
+
+}
+
+const closeModal = function (e) {
+    if (modal === null) return
+    e.preventDefault()
+    modal.style.display = "none"
+    modal.setAttribute('aria-hidden', 'true')
+    modal.removeAttribute('aria-modal')
+    modal.removeEventListener('click', closeModal)
+    modal.querySelector('.js-modal-close').removelistener('click', closeModal)
+    let z = modal.querySelector('.js-modal-stop').removelistener('click', stopPropagation)
+    modal = null
+    console.log(z);
+}
+
+const stopPropagation = function (e) {
+    e.stopPropagation()
+}
+
+document.querySelectorAll('.js-modal').forEach(a => {
+    a.addEventListener(`click`, openModal)
+});
+
+
+
+
+
 

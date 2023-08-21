@@ -48,7 +48,7 @@ async function getConnexion(email, mdp) {
     if (connexion.token) {
   
       window.localStorage.setItem("user", JSON.stringify(connexion))
-      window.location.href = 'http://127.0.0.1:5500/FrontEnd/'
+      window.location.href = '/index.html'
     }
     if (connexion.error) {
       const messageError = document.createElement("div")
@@ -58,7 +58,7 @@ async function getConnexion(email, mdp) {
     }
     if (connexion.message) {
       const messageError = document.createElement("div")
-      messageError.innerText = 'E-mail icorrect'
+      messageError.innerText = 'E-mail incorrect'
       messageError.className = 'alert'
       inputLogin.after(messageError)
     }

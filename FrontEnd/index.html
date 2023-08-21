@@ -11,6 +11,10 @@
 		rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+		integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 
 <body>
@@ -28,7 +32,7 @@
 	<main>
 		<section id="introduction">
 			<figure>
-				<img src="./assets/images/sophie-bluel.png" alt="">
+				<img class="imageProfil" src="./assets/images/sophie-bluel.png" alt="">
 			</figure>
 			<article>
 				<h2>Designer d'espace</h2>
@@ -40,9 +44,42 @@
 				<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG,
 					décorateur(trice)</p>
 			</article>
+
+
 		</section>
+
+		<a href="#modal1" class="modal2 js-modal">modifier</a>
+
+		<aside id="modal1" class="modal" aria-hidden="true" role="" aria-labelledby="titleModal" style="display: none;">
+			<div class="modal-header"></div>
+			<div class="modal-wrapper js-modal-stop">
+				<div class="js-modal-close buttonDeleted"><i class="fa-regular fa-x"></i></button></div>
+				<h3 id="titleModal">Gallerie photo</h3>
+
+
+
+				<div class="gestionGallery">
+					
+					<div class="image-modal">
+
+						<img class="image-modal1" src="assets/images/abajour-tahina.png" alt="">
+						<i class="fa-solid fa-trash-can icon-modal"></i>
+						<i class="fa-solid fa-arrows-up-down-left-right icon-modal1"></i>
+					</div>
+
+				</div>
+				<div class="ajoutsupp">
+					<hr class="divider">
+					<div class="ajouter"><button>Ajouter une photo</button></div>
+					<div class="supprimer">supprimer la galerie</div>
+				</div>
+			</div>
+		</aside>
+
 		<section id="portfolio">
-			<h2>Mes Projets</h2>
+			<h2>Mes Projets <div class="modal3"><a href="#modal1" class="js-modal">modifier</a></div>
+			</h2>
+
 
 
 			<div class="box-filters ">
@@ -51,7 +88,7 @@
 
 			<div class="gallery">
 				<!-- <figure id="premier">
-					<img id="fleur" src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
+					<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
 					<figcaption>Abajour Tahina</figcaption>
 				</figure>
 				<figure id="deuxieme">
@@ -109,6 +146,8 @@
 				<input type="submit" value="Envoyer">
 			</form>
 		</section>
+
+
 	</main>
 
 	<footer>
